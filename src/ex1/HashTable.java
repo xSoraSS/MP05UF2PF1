@@ -27,6 +27,10 @@ public class HashTable {
         }
         else {
             HashEntry temp = entries[hash];
+            //ERROR: #se ha tenido que añadir las siguientes lineas para poder sobreescribir valores en el put del Hash.
+            if (temp.key.equals(hashEntry.key)){
+                entries[hash] = hashEntry;
+            }
             while(temp.next != null)
                 temp = temp.next;
 

@@ -29,6 +29,11 @@ class HashTableTest {
         ht.put("2", "Dos");
         Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [2, Uno] -> [2, Dos]", ht.toString());
 
+        ht.put("2", "Tres");
+        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [2, Tres]", ht.toString());
+
+        System.out.println(ht.get("1") + " " +ht.get("2"));
+
 
     }
 
