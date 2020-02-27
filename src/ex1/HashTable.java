@@ -20,7 +20,7 @@ public class HashTable {
 
     public void put(String key, String value) {
         int hash = getHash(key);
-        final HashEntry hashEntry = new HashEntry(key, value);
+        HashEntry hashEntry = new HashEntry(key, value);
 
         if(entries[hash] == null) {
             entries[hash] = hashEntry;
@@ -35,10 +35,14 @@ public class HashTable {
                     temp = temp.next;
                     if (temp.key.equals(key)) {
                         temp.value = value;
+                        hashEntry = null;
                     }
                 }
-                temp.next = hashEntry;
-                hashEntry.prev = temp;
+
+                if (hashEntry != null) {
+                    temp.next = hashEntry;
+                    hashEntry.prev = temp;
+                }
             }
         }
     }
@@ -193,7 +197,8 @@ public class HashTable {
 
     public static void main(String[] args) {
         HashTable hashTable = new HashTable();
-        
+
+        System.out.println(hashTable.getCollisionsForKey("2", 9));
         // Put some key values.
         for(int i=0; i<30; i++) {
             final String key = String.valueOf(i);
