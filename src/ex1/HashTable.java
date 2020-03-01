@@ -55,9 +55,9 @@ public class HashTable {
         if(entries[hash] != null) {
             HashEntry temp = entries[hash];
 
-            while( !temp.key.equals(key))
+            while( !temp.key.equals(key)) {
                 temp = temp.next;
-
+            }
             return temp.value;
         }
 
@@ -198,7 +198,7 @@ public class HashTable {
     public static void main(String[] args) {
         HashTable hashTable = new HashTable();
 
-        System.out.println(hashTable.getCollisionsForKey("2", 9));
+        System.out.println(hashTable.getCollisionsForKey("3", 9));
         // Put some key values.
         for(int i=0; i<30; i++) {
             final String key = String.valueOf(i);
