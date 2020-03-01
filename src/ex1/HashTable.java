@@ -11,10 +11,18 @@ public class HashTable {
     private HashEntry[] entries = new HashEntry[INITIAL_SIZE];
 
     public int size(){
+        /**
+         * Siempre que haya una modificación, que no sean colisiones o sobreescriptura, este valor deberá variar.
+         * @param size
+         */
         return this.size;
     }
 
     public int realSize(){
+        /**
+         * En cualquier caso de modificación este tamaño no debe aumentar.
+         * @param INITIAL_SIZE Tamaño Real.
+         */
         return this.INITIAL_SIZE;
     }
 
@@ -24,10 +32,18 @@ public class HashTable {
 
         if(entries[hash] == null) {
             entries[hash] = hashEntry;
+            /**
+             * ERROR: A continuación se ha añadido el size++ dentro del metodo Put para que cada vez que se inserte una nueva entrada está se sume al tamaño.
+             * @param size Almacena el tamaño actual de la hashtable.
+             */
+            size++;
 
         } else {
             HashEntry temp = entries[hash];
-            //ERROR: #se ha tenido que añadir las siguientes lineas para poder sobreescribir valores en el put del Hash.
+
+            /**
+             * ERROR: #se ha tenido que añadir las siguientes lineas para poder sobreescribir valores en el Put del Hash.
+             */
             if (temp.key.equals(key)) {
                 temp.value = value;
             } else {
@@ -69,13 +85,20 @@ public class HashTable {
         if(entries[hash] != null) {
 
             HashEntry temp = entries[hash];
-            while( !temp.key.equals(key))
+            while (!temp.key.equals(key))
                 temp = temp.next;
 
-            if(temp.prev == null) entries[hash] = null;             //esborrar element únic (no col·lissió)
-            else{
-                if(temp.next != null) temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
-                temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+            /**
+             *
+             */
+            if(temp.prev == null && temp.key.equals(key)) {
+                entries[hash] = null;//esborrar element únic (no col·lissió)
+            }else{
+                if(temp.next != null) {
+                    temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
+                }else {
+                    temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+                }
             }
         }
     }

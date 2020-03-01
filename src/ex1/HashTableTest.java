@@ -7,18 +7,56 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HashTableTest {
 
+    /**
+     * Instanciar nuestra hashTable es necesario para realizar los siguientes juegos de prueba.
+     */
     HashTable ht = new HashTable();
 
+    /**
+     * A continuación se realizan los juegos de pruebas sobre el metodo Size.
+     */
     @org.junit.jupiter.api.Test
     void size() {
-    }
+        /**
+         * A continuación insertamos varias clave-valor, reemplazando y haciendo colisionar sus hash para comprobar que el tamaño siempre es correcto.
+         * En caso de que un hash colisione con otro (3 && 36) no deberá aumentar el tamaño, lo mismo en caso de ser reemplazados.
+         */
+        ht.put("1", "Primero");
+        ht.put("3", "Segundo");
+        ht.put("1", "Reemplazado");
+        ht.put("36", "Segundo-Tercero");
+        Assertions.assertEquals(2, ht.size());
+        ht.put("36", "Segundo-Tercero-Reemplazado");
+        ht.put("4", "Segundo-Tercero-Reemplazado");
 
-    @org.junit.jupiter.api.Test
-    void realSize() {
+        Assertions.assertEquals(3, ht.size());
+
+        ht.drop("3");
+        Assertions.assertEquals(3, ht.size());
+        ht.drop("36");
+        Assertions.assertEquals(2, ht.size());
+
     }
 
     /**
-     * A continuación se realizan los juegos de pruebas sobre el metodo Put
+     * A continuación se realizan los juegos de pruebas sobre el metodo RealSize.
+     */
+    @org.junit.jupiter.api.Test
+    void realSize() {
+        /**
+         * A continuación insertamos varias clave-valor, reemplazando y haciendo colisionar sus hash para comprobar que el tamaño real siempre sea el mismo predefenido.
+         * En cualquiero caso de modificación este valor no deberá aumentar.
+         */
+        ht.put("1", "Primero");
+        ht.put("3", "Segundo");
+        ht.put("1", "Reemplazado");
+        ht.put("36", "Segundo-Tercero");
+
+        Assertions.assertEquals(16, ht.realSize());
+    }
+
+    /**
+     * A continuación se realizan los juegos de pruebas sobre el metodo Put.
      */
     @org.junit.jupiter.api.Test
     void put() {
@@ -37,26 +75,34 @@ class HashTableTest {
         Assertions.assertEquals("\n bucket[1] = [1, Test]", ht.toString());
 
         /**
-         * COMPROBAMOS LA ANTERIOR CLAVE-VALOR HA SIDO INSERTADA CORRECTAMENTE ADEMÁS DE AÑADIR UNA NUEVA
-         */
-        ht.put("2", "Uno");
-        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [2, Uno]", ht.toString());
+         * Se inserta una clave-valor que colisiona con el hash de otra clave que todavía no ha sido introducida.
+         * Se comprueba que esto es posible y que se guarda en la posición que le corresponde.
+         * */
+        ht.put("13", "Trece");
+        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Trece]", ht.toString());
 
         /**
-         * COMPROBAMOS LA ANTERIOR CLAVE-VALOR HA SIDO INSERTADA CORRECTAMENTE ADEMÁS DE AÑADIR UNA NUEVA, ESTA VEZ QUE COLISIONE CON EL HASH DE LA ANTERIOR
+         * Comprobamos que se puede insertar una clave valor con una colisión de hash sin orden alguno.
          */
-        ht.put("13", "Trece");
-        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [2, Uno] -> [13, Trece]", ht.toString());
+        ht.put("2", "Uno");
+        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Trece] -> [2, Uno]", ht.toString());
 
-        /**COMPROBAMOS QUE LAS ANTERIORES CLAVES-VALOR HAN SIDO CORRECTAMENTE AÑADIDAS ADEMÁS DE ESTA VEZ REEMPLAZAR
-        *UNA CLAVE-VALOR QUE COLISIONA CON OTRA Y COMPROBAR QUE SOLO CAMBIA LA QUE QUEREMOS MODIFICAR.
+        /** Comprobamos que las anteriores claves siguen insertadas correctamente además de añadir
+        * Una clave-valor que colisiona con otra y comprobar que solo cambia la modificada.
          */
         ht.put("13", "Reemplaza");
-        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [2, Uno] -> [13, Reemplaza]", ht.toString());
+        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]", ht.toString());
+
+        /**
+         * Se inserta una clave-valor que colisiona con el hash de otra clave que todavía no ha sido introducida.
+         * Se comprueba que esto es posible y que se guarda en la posición que le corresponde.
+         */
+        ht.put("36", "Tres");
+        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]\n bucket[3] = [36, Tres]", ht.toString());
     }
 
     /**
-     * A CONTINUACIÓN REALIZAMOS LOS JUEGOS DE PRUEBAS SOBRE EL METODO GET
+     * A continuación se realizan los juegos de pruebas sobre el metodo Get.
      */
     @org.junit.jupiter.api.Test
     void get() {
@@ -105,7 +151,37 @@ class HashTableTest {
 
     }
 
+    // no borrar si esta vacio
+
+    // no borrar si no encuentra key en esa posicion
+
+    // borrar caso solitario
+
+    // al borrar una entrada que este en medio, remplazar por la siguiente. hay que jugar con el .next y .previous
+    // si es el ultimo, .previous.next = null
+    // si es el primero, entries[i] =  .next, .next.previous = null
+
     @org.junit.jupiter.api.Test
     void drop() {
+        /**
+         * En el primer caso lo que vamos a comprobar es que tras insertar el primero podamos proceder a borrarlo y al obtenerlo con un Get nos devuelva null.
+         */
+//        ht.put("1", "Primero");
+//        Assertions.assertEquals("\n bucket[1] = [1, Primero]", ht.toString());
+//        ht.drop("1");
+//        Assertions.assertEquals(null, ht.get("1"));
+//        Assertions.assertEquals("", ht.toString());
+//
+//        ht.drop("1");
+//        Assertions.assertEquals(null, ht.get("1"));
+//        Assertions.assertEquals("", ht.toString());
+
+        ht.put("3", "Segundo");
+        ht.put("25", "Segundo-Hash");
+        Assertions.assertEquals("\n bucket[3] = [3, Segundo] -> [25, Segundo-Hash]", ht.toString());
+        ht.drop("3");
+        Assertions.assertEquals("Segundo-Hash", ht.get("25"));
+        Assertions.assertEquals("\n bucket[3] = [25, Segundo-Hash]", ht.toString());
+
     }
 }
