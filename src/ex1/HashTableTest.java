@@ -166,22 +166,23 @@ class HashTableTest {
         /**
          * En el primer caso lo que vamos a comprobar es que tras insertar el primero podamos proceder a borrarlo y al obtenerlo con un Get nos devuelva null.
          */
-//        ht.put("1", "Primero");
-//        Assertions.assertEquals("\n bucket[1] = [1, Primero]", ht.toString());
-//        ht.drop("1");
-//        Assertions.assertEquals(null, ht.get("1"));
-//        Assertions.assertEquals("", ht.toString());
-//
-//        ht.drop("1");
-//        Assertions.assertEquals(null, ht.get("1"));
-//        Assertions.assertEquals("", ht.toString());
+        ht.put("1", "Primero");
+        Assertions.assertEquals("\n bucket[1] = [1, Primero]", ht.toString());
+        ht.drop("1");
+        Assertions.assertEquals(null, ht.get("1"));
+        Assertions.assertEquals("", ht.toString());
+
+        ht.drop("1");
+        Assertions.assertEquals(null, ht.get("1"));
+        Assertions.assertEquals("", ht.toString());
 
         ht.put("3", "Segundo");
         ht.put("25", "Segundo-Hash");
-        Assertions.assertEquals("\n bucket[3] = [3, Segundo] -> [25, Segundo-Hash]", ht.toString());
+        ht.put("36", "Tercer-Hash");
+        Assertions.assertEquals("\n bucket[3] = [3, Segundo] -> [25, Segundo-Hash] -> [36, Tercer-Hash]", ht.toString());
         ht.drop("3");
-        Assertions.assertEquals("Segundo-Hash", ht.get("25"));
-        Assertions.assertEquals("\n bucket[3] = [25, Segundo-Hash]", ht.toString());
+        Assertions.assertEquals("Segundo", ht.get("3"));
+        Assertions.assertEquals("\n bucket[3] = [36, Tercer-Hash]", ht.toString());
 
     }
 }

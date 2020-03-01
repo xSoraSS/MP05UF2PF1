@@ -88,16 +88,16 @@ public class HashTable {
             while (!temp.key.equals(key))
                 temp = temp.next;
 
-            /**
-             *
-             */
-            if(temp.prev == null && temp.key.equals(key)) {
-                entries[hash] = null;//esborrar element únic (no col·lissió)
+            if(temp.prev == null) {
+                /**
+                 * ERROR: Se ha modificado el siguiente codigo para reemplazar la primera clave-valor dentro de la hashtable.
+                 */
+                entries[hash] = temp.next; //esborrar element únic (no col·lissió)
             }else{
                 if(temp.next != null) {
-                    temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
+                    temp.next.prev = temp.next; //esborrem temp, per tant actualitzem l'anterior al següent
                 }else {
-                    temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+                    temp.prev.next = temp.next; //esborrem temp, per tant actualitzem el següent de l'anterior
                 }
             }
         }
