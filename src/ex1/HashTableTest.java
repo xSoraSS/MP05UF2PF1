@@ -3,8 +3,6 @@ package ex1;
 
 import org.junit.jupiter.api.Assertions;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class HashTableTest {
 
     /**
@@ -18,22 +16,52 @@ class HashTableTest {
     @org.junit.jupiter.api.Test
     void size() {
         /**
-         * A continuación insertamos varias clave-valor, reemplazando y haciendo colisionar sus hash para comprobar que el tamaño siempre es correcto.
-         * En caso de que un hash colisione con otro (3 && 36) no deberá aumentar el tamaño, lo mismo en caso de ser reemplazados.
+         * A continuación insertamos varias clave-valor, reemplazando y haciendo colisionar sus hash para comprobar que el tamaño siempre es correcto. En caso de que un
+         * hash colisione con otro (3 && 36) no deberá aumentar el tamaño, lo mismo en caso de ser reemplazados.
          */
         ht.put("1", "Primero");
         ht.put("3", "Segundo");
         ht.put("1", "Reemplazado");
         ht.put("36", "Segundo-Tercero");
+        /**
+         * Tras reemplazar y añadir una colisión comprobamos que el tamaño es correcto. Comprobamos que el tamaño sea 2.
+         */
         Assertions.assertEquals(2, ht.size());
-        ht.put("36", "Segundo-Tercero-Reemplazado");
-        ht.put("4", "Segundo-Tercero-Reemplazado");
 
+        ht.put("36", "Segundo-Reemplazado");
+        ht.put("4", "Cuarto");
+        Assertions.assertEquals("\n bucket[1] = [1, Reemplazado]\n bucket[3] = [3, Segundo] -> [36, Segundo-Reemplazado]\n bucket[4] = [4, Cuarto]", ht.toString());
+
+        /**
+         * Volvemos a añadir un elemento y a reemplazar una colisión. Comprobamos que el tamaño sea 3.
+         */
         Assertions.assertEquals(3, ht.size());
 
+        /**
+         * Ahora eliminamos un elemento que colisione y comprobamos que el tamaño se mantiene igual.
+         */
         ht.drop("3");
         Assertions.assertEquals(3, ht.size());
+        Assertions.assertEquals("\n bucket[1] = [1, Reemplazado]\n bucket[3] = [36, Segundo-Reemplazado]\n bucket[4] = [4, Cuarto]", ht.toString());
+
+        /**
+         * A continuación eliminamos definitivamente la colisión (el elemento que colisionaba con el anterior) y comprobamos que el tamaño se reduce.
+         */
         ht.drop("36");
+        Assertions.assertEquals(2, ht.size());
+
+        Assertions.assertEquals("Segundo-Reemplazado", ht.get("36"));
+
+        ht.put("3", "ASD");
+        ht.put("14", "aa");
+        ht.put("25", "DAS");
+
+        /**
+         * Tras añadir tres elementos de los cuales sus hash colisionan comprobamos que se pueda eliminar el de en medio sin reducir su tamaño.
+         */
+        ht.drop("25");
+        // ht.drop("3");
+        ht.drop("14");
         Assertions.assertEquals(2, ht.size());
 
     }
@@ -51,6 +79,7 @@ class HashTableTest {
         ht.put("3", "Segundo");
         ht.put("1", "Reemplazado");
         ht.put("36", "Segundo-Tercero");
+        ht.drop("1");
 
         Assertions.assertEquals(16, ht.realSize());
     }
@@ -68,6 +97,7 @@ class HashTableTest {
 
         /**
          * Comprobamos que se inserta la clave-vaor 1-Test
+         *
          * @param key Aquí le pasamos al metodo la clave que deseamos aplicar.
          * @param value Aquí le pasamos al metodo el valor que deseamos aplicar y vincular a dicha clave.
          */
@@ -75,9 +105,9 @@ class HashTableTest {
         Assertions.assertEquals("\n bucket[1] = [1, Test]", ht.toString());
 
         /**
-         * Se inserta una clave-valor que colisiona con el hash de otra clave que todavía no ha sido introducida.
-         * Se comprueba que esto es posible y que se guarda en la posición que le corresponde.
-         * */
+         * Se inserta una clave-valor que colisiona con el hash de otra clave que todavía no ha sido introducida. Se comprueba que esto es posible y que se guarda en la
+         * posición que le corresponde.
+         */
         ht.put("13", "Trece");
         Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Trece]", ht.toString());
 
@@ -87,15 +117,16 @@ class HashTableTest {
         ht.put("2", "Uno");
         Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Trece] -> [2, Uno]", ht.toString());
 
-        /** Comprobamos que las anteriores claves siguen insertadas correctamente además de añadir
-        * Una clave-valor que colisiona con otra y comprobar que solo cambia la modificada.
+        /**
+         * Comprobamos que las anteriores claves siguen insertadas correctamente además de añadir Una clave-valor que colisiona con otra y comprobar que solo cambia la
+         * modificada.
          */
         ht.put("13", "Reemplaza");
         Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]", ht.toString());
 
         /**
-         * Se inserta una clave-valor que colisiona con el hash de otra clave que todavía no ha sido introducida.
-         * Se comprueba que esto es posible y que se guarda en la posición que le corresponde.
+         * Se inserta una clave-valor que colisiona con el hash de otra clave que todavía no ha sido introducida. Se comprueba que esto es posible y que se guarda en la
+         * posición que le corresponde.
          */
         ht.put("36", "Tres");
         Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]\n bucket[3] = [36, Tres]", ht.toString());
@@ -114,6 +145,7 @@ class HashTableTest {
 
         /**
          * Comprobamos si podemos obtener un valor sin antes haber introducido una serie ordenada.
+         *
          * @param key Aquí le especificamos, en el caso del Get, a que clave queremos acceder para retornar su valor.
          * @return El valor vinculado a la clave introducida.
          */
@@ -144,9 +176,9 @@ class HashTableTest {
         ht.put("24", "GetHashRepe");
         Assertions.assertEquals("GetHashRepe", ht.get("24"));
 
-        /**Comprobamos si puede obtener un valor de una clave inexistente pero si de un hash repetido
-        *Assertions.assertEquals("GetHashRepe", ht.get("35"));
-        *He querido dejar constancia de esta prueba comentandola
+        /**
+         * Comprobamos si puede obtener un valor de una clave inexistente pero si de un hash repetido Assertions.assertEquals("GetHashRepe", ht.get("35")); He querido
+         * dejar constancia de esta prueba comentandola
          */
 
     }
@@ -154,12 +186,6 @@ class HashTableTest {
     // no borrar si esta vacio
 
     // no borrar si no encuentra key en esa posicion
-
-    // borrar caso solitario
-
-    // al borrar una entrada que este en medio, remplazar por la siguiente. hay que jugar con el .next y .previous
-    // si es el ultimo, .previous.next = null
-    // si es el primero, entries[i] =  .next, .next.previous = null
 
     @org.junit.jupiter.api.Test
     void drop() {
@@ -172,17 +198,44 @@ class HashTableTest {
         Assertions.assertEquals(null, ht.get("1"));
         Assertions.assertEquals("", ht.toString());
 
-        ht.drop("1");
-        Assertions.assertEquals(null, ht.get("1"));
-        Assertions.assertEquals("", ht.toString());
+        /**
+         * Constancia de que se ha realizado la prueba para comprobar que se ha eliminado correctamente.
+         */
+        // Assertions.assertEquals("Primero", ht.get("1"));
+        // Assertions.assertEquals("Primero", ht.toString());
 
+        /**
+         * A continuación se realiza la prueba para comprobar que se pueda borrar el último sin borrar el resto.
+         */
         ht.put("3", "Segundo");
         ht.put("25", "Segundo-Hash");
         ht.put("36", "Tercer-Hash");
         Assertions.assertEquals("\n bucket[3] = [3, Segundo] -> [25, Segundo-Hash] -> [36, Tercer-Hash]", ht.toString());
-        ht.drop("3");
+        ht.drop("36");
+        Assertions.assertEquals("Segundo-Hash", ht.get("25"));
         Assertions.assertEquals("Segundo", ht.get("3"));
-        Assertions.assertEquals("\n bucket[3] = [36, Tercer-Hash]", ht.toString());
 
+        Assertions.assertEquals("\n bucket[3] = [3, Segundo] -> [25, Segundo-Hash]", ht.toString());
+
+        /**
+         * A continuación se realiza la prueba para comprobar que se pueda borrar el primero sin borrar el resto.
+         */
+        ht.put("36", "Tercer-Hash");
+        Assertions.assertEquals("\n bucket[3] = [3, Segundo] -> [25, Segundo-Hash] -> [36, Tercer-Hash]", ht.toString());
+        ht.drop("3");
+        Assertions.assertEquals("Segundo-Hash", ht.get("25"));
+        Assertions.assertEquals("Tercer-Hash", ht.get("36"));
+
+        Assertions.assertEquals("\n bucket[3] = [25, Segundo-Hash] -> [36, Tercer-Hash]", ht.toString());
+
+        /**
+         * A continuación se realiza la prueba para comprobar que se pueda borrar el que se encuentre en el medio sin borrar el resto.
+         */
+        ht.put("3", "Segundo");
+        Assertions.assertEquals("\n bucket[3] = [25, Segundo-Hash] -> [36, Tercer-Hash] -> [3, Segundo]", ht.toString());
+        ht.drop("25");
+        Assertions.assertEquals("Segundo", ht.get("3"));
+        Assertions.assertEquals("Tercer-Hash", ht.get("36"));
+        Assertions.assertEquals("\n bucket[3] = [36, Tercer-Hash] -> [3, Segundo]", ht.toString());
     }
 }
