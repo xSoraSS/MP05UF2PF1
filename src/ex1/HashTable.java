@@ -92,37 +92,67 @@ public class HashTable {
                 temp = temp.next;
             }
 
-            System.out.println("\nPrev **************** " + temp.prev);
-            System.out.println("Actu **************** " + temp);
-            System.out.println("Next **************** " + temp.next);
-
             if (temp.prev == null) {
-                /**
-                 * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
-                 */
                 entries[hash] = temp.next; // esborrar element únic (no col·lissió)
-                if (temp.next == null) {
-                    size--;
-                }
             } else {
                 if (temp.next != null) {
-                    /**
-                     * ERROR: La siguiente comrobación ha sido añadida para poder eliminar el elemento localizado entre principio y final sin eliminar el resto.
-                     */
                     if (temp.key.equals(key)) {
                         entries[hash] = temp.next;
                     } else {
                         temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
                     }
                 } else if (temp.next == null) {
-                    temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
-                    if (entries[hash].next == null) {
-                        size--;
+                    if (temp.key.equals(key)) {
+                        temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
                     }
                 }
             }
         }
     }
+    // public void drop(String key) {
+    // int hash = getHash(key);
+    // if (entries[hash] != null) {
+    //
+    // HashEntry temp = entries[hash];
+    // while (!temp.key.equals(key)) {
+    // temp = temp.next;
+    // }
+    //
+    // if (temp.prev == null) {
+    // /**
+    // * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
+    // */
+    // entries[hash] = temp.next; // esborrar element únic (no col·lissió)
+    // /**
+    // * Se ha añadido la siguiente comprobación para modificar el tamaño.
+    // */
+    // if (temp.next == null) {
+    // size--;
+    // }
+    // } else {
+    // if (temp.next != null) {
+    // /**
+    // * ERROR: La siguiente comrobación ha sido añadida para poder eliminar el elemento localizado entre principio y final sin eliminar el resto.
+    // */
+    // if (temp.key.equals(key)) {
+    // entries[hash] = temp.next;
+    // temp.next = null;
+    // } else {
+    // temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
+    // }
+    // } else if (temp.next == null) {
+    // temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
+    // if (entries[hash].next == null) {
+    // size--;
+    // }
+    // }
+    // }
+    // System.out.println("\nPrev **************** " + temp.prev);
+    // System.out.println("Actu **************** " + temp);
+    // System.out.println("Next **************** " + temp.next);
+    // System.out.println("Tama **************** " + size);
+    // }
+    // }
 
     private int getHash(String key) {
         // piggy backing on java string
