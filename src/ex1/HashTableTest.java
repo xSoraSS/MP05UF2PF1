@@ -23,6 +23,7 @@ class HashTableTest {
         ht.put("3", "Segundo");
         ht.put("1", "Reemplazado");
         ht.put("36", "Segundo-Tercero");
+
         /**
          * Tras reemplazar y añadir una colisión comprobamos que el tamaño es correcto. Comprobamos que el tamaño sea 2.
          */
@@ -35,6 +36,7 @@ class HashTableTest {
         /**
          * Volvemos a añadir un elemento y a reemplazar una colisión. Comprobamos que el tamaño sea 3.
          */
+
         Assertions.assertEquals(3, ht.size());
 
         /**
@@ -48,9 +50,8 @@ class HashTableTest {
          * A continuación eliminamos definitivamente la colisión (el elemento que colisionaba con el anterior) y comprobamos que el tamaño se reduce.
          */
         ht.drop("36");
+        System.out.println("\n\n\nTODAS -3 -36 " + ht);
         Assertions.assertEquals(2, ht.size());
-
-        Assertions.assertEquals("Segundo-Reemplazado", ht.get("36"));
 
         ht.put("3", "ASD");
         ht.put("14", "aa");
@@ -60,7 +61,7 @@ class HashTableTest {
          * Tras añadir tres elementos de los cuales sus hash colisionan comprobamos que se pueda eliminar el de en medio sin reducir su tamaño.
          */
         ht.drop("25");
-        // ht.drop("3");
+        ht.drop("3");
         ht.drop("14");
         Assertions.assertEquals(2, ht.size());
 
@@ -211,7 +212,10 @@ class HashTableTest {
         ht.put("25", "Segundo-Hash");
         ht.put("36", "Tercer-Hash");
         Assertions.assertEquals("\n bucket[3] = [3, Segundo] -> [25, Segundo-Hash] -> [36, Tercer-Hash]", ht.toString());
+        System.out.println("\nTodas: " + ht);
         ht.drop("36");
+        System.out.println("\n\nTodas -36 : " + ht);
+
         Assertions.assertEquals("Segundo-Hash", ht.get("25"));
         Assertions.assertEquals("Segundo", ht.get("3"));
 
