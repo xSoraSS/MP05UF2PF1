@@ -57,6 +57,9 @@ class HashTableTest {
         ht.put("14", "aa");
         ht.put("25", "DAS");
 
+        Assertions.assertEquals(3, ht.size());
+
+
         /**
          * Tras añadir tres elementos de los cuales sus hash colisionan comprobamos que se pueda eliminar el de en medio sin reducir su tamaño.
          */
