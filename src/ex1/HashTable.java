@@ -83,122 +83,49 @@ public class HashTable {
         return null;
     }
 
-//    public void drop(String key) {
-//        int hash = getHash(key);
-//        if (entries[hash] != null) {
-//
-//            HashEntry temp = entries[hash];
-//            while (!temp.key.equals(key)) {
-//                temp = temp.next;
-//            }
-//
-//            if (temp.prev == null) {
-//                 /**
-//                 * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
-//                 */
-//                entries[hash] = temp.next; // esborrar element únic (no col·lissió)
-//
-//                 if (temp.next == null) {
-//                     size--;
-//                 }
-//            } else {
-//                if (temp.next != null) {
-//
-//                        entries[hash] = temp.next;
-//                        temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
-//                } else {
-//                    temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
-//                    if (temp.prev-)
-//                    System.out.println(temp.prev.next);
-//                    System.out.println(temp);
-//                }
-//            }
-//            System.out.println("\nPREV **************** " + temp.prev);
-//            System.out.println("ACTU **************** " + temp);
-//            System.out.println("NEXT **************** " + temp.next + "\n");
-//        }
-//    }
-
-
-//     public void drop(String key) {
-//         int hash = getHash(key);
-//         if (entries[hash] != null) {
-//
-//         HashEntry temp = entries[hash];
-//
-//             if (temp.key.equals(key)) {
-//                 /**
-//                  * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
-//                  */
-//                 if (temp.next != null) temp.next.prev = null;
-//                 entries[hash] = temp.next;
-//                 size--;
-//             }
-//
-////             } else {
-//                 while (!temp.key.equals(key)) {
-//                     temp = temp.next;
-//                 }
-//                 if (temp.next != null) {
-//                     /**
-//                     * ERROR: La siguiente comrobación ha sido añadida para poder eliminar el elemento localizado entre principio y final sin eliminar el resto.
-//                     */
-//                     entries[hash] = temp.next;
-//                     temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
-//                 } else{
-//                     temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
-//
-//                 }
-//             /**
-//              * Se ha añadido la siguiente comprobación para modificar el tamaño.
-//              */
-//             if (entries[hash] == null) {
-//                 size--;
-//             }
-//             System.out.println("\nPrev **************** " + temp.prev);
-//             System.out.println("Actu **************** " + temp);
-//             System.out.println("Next **************** " + temp.next);
-//             System.out.println("Tama **************** " + size);
-//         }
-//
-//         }
-//     }
-
     public void drop(String key) {
         int hash = getHash(key);
-        if(entries[hash] != null) {
-            HashTable.HashEntry temp = entries[hash];
-            if (temp.key.equals(key)){
-                /**
-                  * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
-                  */
-                 if (temp.next != null) temp.next.prev = null;
-                 entries[hash] = temp.next;
-                 size--;
-                 return;
-            }
-            while( !temp.key.equals(key)){
+        if (entries[hash] != null) {
+
+            HashEntry temp = entries[hash];
+            while (!temp.key.equals(key)) {
                 temp = temp.next;
             }
-            System.out.println(temp.value);
-            if (temp.next != null) {
+
+            if (temp.prev == null) {
                  /**
-                 * ERROR: La siguiente comrobación ha sido añadida para poder eliminar el elemento localizado entre principio y final sin eliminar el resto.
+                 * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
                  */
-                 entries[hash] = temp.next;
-                 temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
-             } else {
-                 temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
+                entries[hash] = temp.next; // esborrar element únic (no col·lissió)
 
-             }
-
-             /**
-              * Se ha añadido la siguiente comprobación para modificar el tamaño.
-              */
-              if (entries[hash] == null) {
+                /**
+                 * Se ha añadido la siguiente comprobación para modificar el tamaño.
+                 */
+                 if (temp.next == null) {
                      size--;
                  }
-             }
+            } else {
+                if (temp.next != null) {
+                    /**
+                     * Se ha añadido la siguiente modificación para actualizar correctamente el entrie[hash].
+                     */
+                        entries[hash] = temp.next;
+                        temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
+                } else {
+                    temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
+                }
+                /**
+                 * Se ha añadido la siguiente comprobación para modificar el tamaño.
+                 */
+                if (entries[hash] == null) {
+                    size--;
+                }
+            }
+
+            System.out.println("\nPREV **************** " + temp.prev);
+            System.out.println("ACTU **************** " + temp);
+            System.out.println("NEXT **************** " + temp.next + "\n");
+        }
     }
 
     private int getHash(String key) {
