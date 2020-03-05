@@ -18,9 +18,6 @@ public class HashTable extends HashTableData {
 
     public int realSize() {
         /**
-         *
-         */
-        /**
          * En cualquier caso de modificación este tamaño no debe aumentar.
          *
          * @param INITIAL_SIZE Tamaño Real.
@@ -41,7 +38,8 @@ public class HashTable extends HashTableData {
     }
 
     /**
-     * A continuación realizamos una sobrecarga del metodo, reutilizarlo con diferentes valores, para poder insertar objetos en vez de cadenas de texto ¡COMO VALOR!.
+     * MILLORA: A continuación realizamos una sobrecarga del metodo, reutilizarlo con diferentes valores, para poder insertar objetos en vez de cadenas de texto ¡COMO
+     * VALOR!.
      *
      * @param key
      * @param object
@@ -182,7 +180,7 @@ public class HashTable extends HashTableData {
         }
 
         /**
-         * A continuación se ha añadido el siguiente constructor para permitir la entrada de un objeto.
+         * MILLORA: A continuación se ha añadido el siguiente constructor para permitir la entrada de un objeto.
          *
          * @param key
          * @param object
@@ -195,7 +193,7 @@ public class HashTable extends HashTableData {
         }
 
         /**
-         * Se realiza la siguiente comprobación para, en el momento de llamar al toString, saber si se utiliza Object o String.
+         * MILLORA: Se realiza la siguiente comprobación para, en el momento de llamar al toString, saber si se utiliza Object o String.
          */
         @Override
         public String toString() {
@@ -294,4 +292,3 @@ public class HashTable extends HashTableData {
      * en sentido que creará la tabla. Dejo constancia con el siguiente comentario para indicar que el metodo se encontraba localizado aquí.
      */
     // public HashTableData hashTableData = new HashTableData();
-}
