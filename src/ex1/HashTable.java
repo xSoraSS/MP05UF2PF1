@@ -12,7 +12,7 @@ public class HashTable {
 
     public int size() {
         /**
-         * Siempre que haya una modificación, que no sean colisiones o sobreescriptura, este valor deberá variar.
+         * Siempre que haya una modificación, que no sean colisiones o reemplazos, este valor deberá variar.
          *
          * @param size
          */
@@ -45,7 +45,7 @@ public class HashTable {
             HashEntry temp = entries[hash];
 
             /**
-             * ERROR: #se ha tenido que añadir las siguientes lineas para poder sobreescribir valores en el Put del Hash.
+             * ERROR: Se ha tenido que añadir las siguientes lineas para poder sobreescribir valores en el Put del Hash.
              */
             if (temp.key.equals(key)) {
                 temp.value = value;
@@ -93,7 +93,7 @@ public class HashTable {
             }
 
             if (temp.prev == null) {
-                 /**
+                /**
                  * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
                  */
                 entries[hash] = temp.next; // esborrar element únic (no col·lissió)
@@ -101,16 +101,16 @@ public class HashTable {
                 /**
                  * Se ha añadido la siguiente comprobación para modificar el tamaño.
                  */
-                 if (temp.next == null) {
-                     size--;
-                 }
+                if (temp.next == null) {
+                    size--;
+                }
             } else {
                 if (temp.next != null) {
                     /**
                      * Se ha añadido la siguiente modificación para actualizar correctamente el entrie[hash].
                      */
-                        entries[hash] = temp.next;
-                        temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
+                    entries[hash] = temp.next;
+                    temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
                 } else {
                     temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
                 }
@@ -121,20 +121,13 @@ public class HashTable {
                     size--;
                 }
             }
-
-            System.out.println("\nPREV **************** " + temp.prev);
-            System.out.println("ACTU **************** " + temp);
-            System.out.println("NEXT **************** " + temp.next + "\n");
         }
     }
 
     private int getHash(String key) {
         // piggy backing on java string
         // hashcode implementation.
-        /**
-         * ERROR: Algunas claves del hash devuelven un valor incorrecto, debido a esto obtenemos el absoluto del resultado.
-         */
-        return Math.abs(key.hashCode() % INITIAL_SIZE);
+        return Math.abs(key.hashCode()) % INITIAL_SIZE;
     }
 
     private class HashEntry {
