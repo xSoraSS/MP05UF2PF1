@@ -38,7 +38,7 @@ public class HashTable extends HashTableData {
     }
 
     private void comprobarInsertado(String key, String value, int hash, HashEntry hashEntry) {
-        if (entries[hash] == null) {
+      if (entries[hash] == null) {
             entries[hash] = hashEntry;
             /**
              * ERROR: A continuación se ha añadido el size++ dentro del metodo Put para que cada vez que se inserte una nueva entrada esta se sume al tamaño.
@@ -51,7 +51,7 @@ public class HashTable extends HashTableData {
             HashEntry temp = entries[hash];
 
             /**
-             * ERROR: #se ha tenido que añadir las siguientes lineas para poder sobreescribir valores en el Put del Hash.
+             * ERROR: Se ha tenido que añadir las siguientes lineas para poder sobreescribir valores en el Put del Hash.
              */
             if (temp.key.equals(key)) {
                 temp.value = value;
@@ -107,33 +107,33 @@ public class HashTable extends HashTableData {
     }
 
     private void comprobarEliminado(String key, int hash, HashEntry temp) {
-        if (temp.prev == null) {
-            /**
-             * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
-             */
-            entries[hash] = temp.next; // esborrar element únic (no col·lissió)
-            /**
-             * Se ha añadido la siguiente comprobación para modificar el tamaño.
-             */
-            if (temp.next == null) {
-                size--;
-            }
-        } else {
-            if (temp.next != null) {
+         if (temp.prev == null) {
                 /**
-                 * ERROR: La siguiente comrobación ha sido añadida para poder eliminar el elemento localizado entre principio y final sin eliminar el resto.
+                 * ERROR: A continuación se ha realizado la siguiente modificación para que al eliminar el primer elemento no elimine el resto que puedan colisionar.
                  */
-                if (temp.key.equals(key)) {
-                    entries[hash] = temp.next;
-                    System.out.println("\nNEXT*****");
-                } else {
-                    entries[hash] = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
+                entries[hash] = temp.next; // esborrar element únic (no col·lissió)
+
+                /**
+                 * Se ha añadido la siguiente comprobación para modificar el tamaño.
+                 */
+                if (temp.next == null) {
+                    size--;
                 }
-            } else if (temp.next == null) {
-                if (temp.key.equals(key)) {
-                    temp.prev.next = temp.next; // esborrem temp, per tant actualitzem l'anterior al següent
-                } else {
+            } else {
+                if (temp.next != null) {
+                    /**
+                     * Se ha añadido la siguiente modificación para actualizar correctamente el entrie[hash].
+                     */
                     entries[hash] = temp.next;
+                    temp.next.prev = temp.prev; // esborrem temp, per tant actualitzem l'anterior al següent
+                } else {
+                    temp.prev.next = temp.next; // esborrem temp, per tant actualitzem el següent de l'anterior
+                }
+                /**
+                 * Se ha añadido la siguiente comprobación para modificar el tamaño.
+                 */
+                if (entries[hash] == null) {
+                    size--;
                 }
             }
         }
