@@ -1,3 +1,5 @@
+package ex3;
+
 import org.junit.jupiter.api.Assertions;
 
 class HashTableTest {
@@ -145,16 +147,23 @@ class HashTableTest {
         Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]\n bucket[3] = [36, Tres]", ht.toString());
 
         /**
-         * Tras haber realizado la modificación en el código para poder añadir objetos, se ha decidido crear una clase, ObjetoRando, para poder realizar la siguiente
-         * comprobación sin ninguna complicación.
+         * Tras haber realizado la modificación en el código para poder añadir objetos, se ha decidido crear una clase, ObjetoRandom. A continuación se realiza la primera
+         * prueba con Objetos. Se ha tenido que añadir + object + al assetEquals para poder obtener el objeto@id que tenga autoasignado.
          */
         ObjetoRandom object = new ObjetoRandom("Funciona");
-        ht.put("5", object.getNombre());
-        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]\n bucket[3] = [36, Tres]\n bucket[5] = [5, Funciona]", ht.toString());
+        ht.put("5", object);
+        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]\n bucket[3] = [36, Tres]\n bucket[5] = [5, " + object + "]", ht.toString());
 
         /**
-         * Para finalizar y asegurar que funciona correctamente procedemos a eliminarlo para comprobar que se elimina igual que si fuera un String.
+         * A continuación intentaremos insertar el String dentro del objeto y comprobaremos que se haya insertado.
          */
+        ht.put("16", object.getNombre());
+        Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]\n bucket[3] = [36, Tres]\n bucket[5] = [5, " + object + "] -> [16, Funciona]", ht.toString());
+
+        /**
+         * A continuación los eliminamos y comprobamos que se haya realizado.
+         */
+        ht.drop("16");
         ht.drop("5");
         Assertions.assertEquals("\n bucket[1] = [1, Test]\n bucket[2] = [13, Reemplaza] -> [2, Uno]\n bucket[3] = [36, Tres]", ht.toString());
 
@@ -210,10 +219,10 @@ class HashTableTest {
         Assertions.assertEquals("GetHashRepe", ht.get("24"));
 
         /**
-         * Comprobamos si puede obtener un valor de una clave inexistente pero si de un hash repetido Assertions.assertEquals("GetHashRepe", ht.get("35")); He querido
-         * dejar constancia de esta prueba comentandola.
+         * Comprobamos si puede obtener un valor de una clave inexistente pero si de un hash repetido. He querido dejar constancia de esta prueba comentandola.
          */
 
+        // Assertions.assertEquals("GetHashRepe", ht.get("35"));
     }
 
     @org.junit.jupiter.api.Test
@@ -282,3 +291,4 @@ class HashTableTest {
         Assertions.assertEquals("Tercer-Hash", ht.get("36"));
         Assertions.assertEquals("\n bucket[3] = [36, Tercer-Hash] -> [3, Segundo]", ht.toString());
     }
+}
