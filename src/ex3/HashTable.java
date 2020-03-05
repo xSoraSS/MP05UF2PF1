@@ -292,3 +292,4 @@ public class HashTable extends HashTableData {
      * en sentido que creará la tabla. Dejo constancia con el siguiente comentario para indicar que el metodo se encontraba localizado aquí.
      */
     // public HashTableData hashTableData = new HashTableData();
+}
