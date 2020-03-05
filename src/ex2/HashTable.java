@@ -30,7 +30,7 @@ public class HashTable extends HashTableData {
         HashEntry hashEntry = new HashEntry(key, value);
 
         /**
-         * REFACCIÓ: Se realiza a continuación para una mejor compresión de lo se lleva a cabo en este metodo. Como al llamar al Put lo que hace es comprobar si debe
+         * REFACCIÓ: Se realiza a continuación para una mejor compresión de lo que se lleva a cabo en este metodo. Como al llamar al Put lo que hace es comprobar si debe
          * insertar directamente, existen colisiones o debe sobreescribir la mejor forma de comprender esto Es separarlo en uno o varios metodos con el nombre de lol que
          * hará.
          */
